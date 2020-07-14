@@ -6,7 +6,6 @@ import (
 	"os"
 )
 
-
 func commandline() (int, string) {
 
 	port := flag.Int("port", 0, "listening port. (Required)")
@@ -18,7 +17,6 @@ func commandline() (int, string) {
 		fmt.Printf("Error! configure path and listening port must be assigned!\nfor example:\n    --port=8080\n    --confPath=/etc/conf.toml\n")
 		os.Exit(1)
 	}
-
 
 	if *port == 0 {
 		fmt.Printf("Error! listening port must be assigned!\nfor example:\n    --port=8080\n")
@@ -34,4 +32,7 @@ func commandline() (int, string) {
 
 }
 
-var Port, confPath = commandline()
+//var Port, confPath = commandline()
+
+var Port = 8075
+var confPath = "conf/pancake.toml"

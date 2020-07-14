@@ -3,7 +3,6 @@ package serve
 import (
 	"fmt"
 	"github.com/Jansora/pancake/web/serve/routers"
-	"github.com/Jansora/pancake/web/tools"
 	"github.com/gin-gonic/gin"
 )
 
@@ -38,6 +37,6 @@ func App() {
 	})
 	routers.Init(r)
 
-	port := fmt.Sprintf(":%d", tools.Port)
+	port := fmt.Sprintf(":%d", 8075)
 	r.Run(port) // listen and serve on 0.0.0.0:8080
 }
