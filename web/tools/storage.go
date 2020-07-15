@@ -9,8 +9,6 @@ import (
 	"time"
 )
 
-
-
 func Client() *oss.Client {
 
 	client, err := oss.New(Conf.STORAGE.EndPoint, Conf.STORAGE.AccessKeyId, Conf.STORAGE.AccessKeySecret)
@@ -67,7 +65,7 @@ func saveToLocal(fp io.Reader, objectName string) string {
 func Upload(fp io.Reader, objectName string) string {
 
 	// 上传文件流。
-	if (Conf.STORAGE.UseOss) {
+	if Conf.STORAGE.UseOss {
 		return uploadToOSS(fp, objectName)
 	} else {
 		return saveToLocal(fp, objectName)

@@ -32,7 +32,7 @@ func commandline() (int, string) {
 
 }
 
-//var Port, confPath = commandline()
+var Port, confPath = commandline()
 
-var Port = 8075
-var confPath = "conf/pancake.toml"
+//var Port = 8075
+//var confPath = "conf/pancake.toml"

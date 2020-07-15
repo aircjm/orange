@@ -7,10 +7,8 @@ import (
 )
 
 func App() {
-	//gin.SetMode(gin.ReleaseMode)
-
 	r := gin.New()
-
+	gin.SetMode(gin.ReleaseMode)
 	//f, _ := os.Create("/var/log/gin/access.log")
 	//
 	//

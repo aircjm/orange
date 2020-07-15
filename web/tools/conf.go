@@ -6,44 +6,39 @@ import (
 )
 
 type Postgres struct {
-	User string
+	User     string
 	Password string
-	Host string
-	Port int
+	Host     string
+	Port     int
 	DataBase string
-	SSLmode string
+	SSLmode  string
 }
 
 type Admin struct {
-	Name   string
+	Name     string
 	Password string
-	Website string
-	Email string
-	Admin bool
+	Website  string
+	Email    string
+	Admin    bool
 }
 
-
 type Domain struct {
-	MainDomain string
+	MainDomain  string
 	AdminDomain string
 }
 
-
 type Storage struct {
-
-	UseOss bool
-	EndPoint string
-	AccessKeyId string
+	UseOss          bool
+	EndPoint        string
+	AccessKeyId     string
 	AccessKeySecret string
-	Bucket string
-	AliasDomain string
+	Bucket          string
+	AliasDomain     string
 
-	OssPrefix  string
-	LocalSavePrefix string
+	OssPrefix         string
+	LocalSavePrefix   string
 	LocalReturnPrefix string
-
 }
-
 
 func (p Postgres) Connect() string {
 	return fmt.Sprintf(`postgres://%s:%s@%s:%d/%s?sslmode=%s`,
@@ -51,18 +46,16 @@ func (p Postgres) Connect() string {
 }
 
 type Config struct {
-	PG Postgres
+	PG    Postgres
 	ADMIN Admin
 
-	DOMAIN Domain
+	DOMAIN  Domain
 	STORAGE Storage
 }
 
 func (c Config) String() string {
 	return c.PG.Connect()
 }
-
-
 
 func GetConf() Config {
 	var conf Config
