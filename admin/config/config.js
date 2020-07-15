@@ -246,7 +246,7 @@ export default {
   */
   proxy: {
     '/Golang/': {
-      target: 'http://jansora.com:8080/',
+      target: 'http://localhost:8075/',
       changeOrigin: true,
     },
   },
