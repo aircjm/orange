@@ -9,7 +9,7 @@ conf = toml.loads(open('web/conf/pancake.toml').read())
 os.system("cd admin && npm install && npm run build")
 
 # 打包application静态文件。
-os.system("cd application && npm install && export PUBLIC_URL=https://cdn.jansora.com/application&&  npm run build")
+os.system("cd application && npm install && export PUBLIC_URL=https://cdn.chenjiaming.org/application && npm run build")
 
 
 
