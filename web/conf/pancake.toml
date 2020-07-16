@@ -36,13 +36,8 @@ LocalReturnPrefix = "/static/"
 
 
 [OSS]
-
 EndPoint = "oss-cn-shanghai.aliyuncs.com"
-
 AccessKeyId = "AccessKeyId"
-
 AccessKeySecret = "AccessKeySecret"
-
 Bucket = "jansora"
-
 AliasDomain = "cdn.jansora.com"
