@@ -3,13 +3,13 @@ import os
 import oss2
 import sys
 
-conf = toml.loads(open('/etc/conf.toml').read())
+conf = toml.loads(open('web/conf/pancake.toml').read())
 
 # 打包admin静态文件。
-os.system("cd admin && yarn && yarn build")
+os.system("cd admin && npm install && npm run build")
 
 # 打包application静态文件。
-os.system("cd application && yarn && export PUBLIC_URL=https://cdn.jansora.com/application&& yarn build")
+os.system("cd application && npm install && export PUBLIC_URL=https://cdn.jansora.com/application&&  npm run build")
 
 
 
