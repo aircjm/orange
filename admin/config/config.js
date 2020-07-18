@@ -107,6 +107,18 @@ export default {
             // { path: '/', redirect: '/welcome' },
             { path: '/', redirect: '/ArticleManage' },
             {
+              path: '/PageManage',
+              name: 'PageManage',
+              icon: 'edit',
+              routes: [
+                {
+                  path: '/PageManage/PageInsert',
+                  name: 'PageManage',
+                  component: './PageManage/PageInsert',
+                },
+              ],
+            },
+            {
               path: '/ArticleManage',
               name: 'ArticleManage',
               icon: 'dashboard',
@@ -207,7 +219,7 @@ export default {
   },
   disableRedirectHoist: true,
   cssLoaderOptions: {
-    modules: true,
+    modules: false,
     getLocalIdent: (context, _, localName) => {
       if (
         context.resourcePath.includes('node_modules') ||
