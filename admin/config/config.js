@@ -113,7 +113,7 @@ export default {
               routes: [
                 {
                   path: '/PageManage/PageInsert',
-                  name: 'PageManage',
+                  name: 'PageInsert',
                   component: './PageManage/PageInsert',
                 },
               ],

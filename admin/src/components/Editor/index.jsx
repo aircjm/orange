@@ -28,15 +28,13 @@ import 'hypermd/addon/table-align';
 
 
 export default class HyperMdEditor extends Component {
-  constructor(...args) {
-    super(...args);
+  constructor(props) {
+    super(props);
     this.codeMirrorRef = React.createRef();
   }
 
   static defaultProps = {
     defaultActiveFirstOption: false,
-    onPressEnter: () => {},
-    onChange: () => {},
     className: '',
     context: '',
     dataSource: [],
@@ -46,7 +44,6 @@ export default class HyperMdEditor extends Component {
 
   render() {
     const { context } = this.props;
-
     const options = {
       mode: 'hypermd',
       // mode: 'gfm',
