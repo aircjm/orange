@@ -5,6 +5,10 @@ import (
 	"github.com/BurntSushi/toml"
 )
 
+type System struct {
+	Port int
+}
+
 type Postgres struct {
 	User     string
 	Password string
@@ -46,8 +50,9 @@ func (p Postgres) Connect() string {
 }
 
 type Config struct {
-	PG    Postgres
-	ADMIN Admin
+	System System
+	PG     Postgres
+	ADMIN  Admin
 
 	DOMAIN  Domain
 	STORAGE Storage
@@ -59,7 +64,7 @@ func (c Config) String() string {
 
 func GetConf() Config {
 	var conf Config
-	if _, err := toml.DecodeFile(confPath, &conf); err != nil {
+	if _, err := toml.DecodeFile("conf/pancake.toml", &conf); err != nil {
 		// handle error
 		fmt.Print("read conf error !", err)
 	}

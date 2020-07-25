@@ -18,6 +18,7 @@ func App() {
 	})
 	routers.Init(r)
 
-	port := fmt.Sprintf(":%d", tools.Port)
-	r.Run(port) // listen and serve on 0.0.0.0:8080
+	port := fmt.Sprintf(":%d", tools.Conf.System.Port)
+	// listen and serve on 0.0.0.0:8080
+	r.Run(port)
 }
