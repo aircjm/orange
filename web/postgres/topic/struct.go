@@ -2,7 +2,7 @@ package topic
 
 import (
 	"fmt"
-	"github.com/Jansora/pancake/web/postgres/article"
+	"github.com/aircjm/orange/web/postgres/article"
 	"time"
 )
 

@@ -1,8 +1,8 @@
 package routers
 
 import (
-	pg "github.com/Jansora/pancake/web/postgres"
-	"github.com/Jansora/pancake/web/postgres/account"
+	pg "github.com/aircjm/orange/web/postgres"
+	"github.com/aircjm/orange/web/postgres/account"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"

@@ -1,4 +1,4 @@
-module github.com/Jansora/pancake/web
+module github.com/aircjm/orange/web
 
 go 1.14
 

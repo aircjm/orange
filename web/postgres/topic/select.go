@@ -3,7 +3,7 @@ package topic
 import (
 	"database/sql"
 	"fmt"
-	"github.com/Jansora/pancake/web/postgres/article"
+	"github.com/aircjm/orange/web/postgres/article"
 	"github.com/lib/pq"
 )
 

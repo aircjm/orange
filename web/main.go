@@ -2,12 +2,12 @@ package main
 
 import (
 	"database/sql"
-	"github.com/Jansora/pancake/web/postgres"
-	"github.com/Jansora/pancake/web/postgres/account"
-	"github.com/Jansora/pancake/web/postgres/article"
-	"github.com/Jansora/pancake/web/postgres/project"
-	"github.com/Jansora/pancake/web/postgres/topic"
-	"github.com/Jansora/pancake/web/serve"
+	"github.com/aircjm/orange/web/postgres"
+	"github.com/aircjm/orange/web/postgres/account"
+	"github.com/aircjm/orange/web/postgres/article"
+	"github.com/aircjm/orange/web/postgres/project"
+	"github.com/aircjm/orange/web/postgres/topic"
+	"github.com/aircjm/orange/web/serve"
 )
 
 func dbOp() {

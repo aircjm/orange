@@ -2,8 +2,8 @@ package routers
 
 import (
 	"fmt"
-	"github.com/Jansora/pancake/web/postgres/account"
-	"github.com/Jansora/pancake/web/tools"
+	"github.com/aircjm/orange/web/postgres/account"
+	"github.com/aircjm/orange/web/tools"
 	"github.com/gin-gonic/gin"
 	"strconv"
 )
