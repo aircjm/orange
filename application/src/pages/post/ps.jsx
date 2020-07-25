@@ -229,22 +229,22 @@ const PS = () => {
                             </div>
                             {/*<Divider style={{margin: '10px 20px 3px 20px'}}/>*/}
                             <p>标签过滤</p>
-                            <div className='tags'>
-                                {
-                                    Object.keys(totalTags).map(tag => classes.indexOf(tag) === -1 &&
-                                        <Tooltip title={`共有 ${totalTags[tag]} 条`} key={tag}>
-                                            <Chip
-                                                variant="outlined"
-                                                component='span'
-                                                label={tag}
-                                                onClick={() => setTags([tag])}
-                                                className={tags.indexOf(tag) >= 0 ? 'active' : ''}
-                                            />
-                                        </Tooltip>
-                                    )
+                            {/*<div className='tags'>*/}
+                                {/*{*/}
+                                    {/*Object.keys(totalTags).map(tag => classes.indexOf(tag) === -1 &&*/}
+                                        {/*<Tooltip title={`共有 ${totalTags[tag]} 条`} key={tag}>*/}
+                                            {/*<Chip*/}
+                                                {/*variant="outlined"*/}
+                                                {/*component='span'*/}
+                                                {/*label={tag}*/}
+                                                {/*onClick={() => setTags([tag])}*/}
+                                                {/*className={tags.indexOf(tag) >= 0 ? 'active' : ''}*/}
+                                            {/*/>*/}
+                                        {/*</Tooltip>*/}
+                                    {/*)*/}
 
-                                }
-                            </div>
+                                {/*}*/}
+                            {/*</div>*/}
                             {/*<Divider style={{margin: '10px 20px'}}/>*/}
                         </FilterWrapper>
                     </Grid>
@@ -254,23 +254,23 @@ const PS = () => {
               <Grid component='div' item xs={isDesktop ? 9 : 12}>
 
                 <>
-                  <MenuWrapper>
-                      {
+                  {/*<MenuWrapper>*/}
+                      {/*{*/}
 
-                          classes.map(tag =>
-                              <Tooltip title={`共有 ${totalTags[tag] ? totalTags[tag] : 0} 条`} key={tag}>
-                                  <Chip
-                                      variant="outlined"
-                                      component='span'
-                                      label={tag}
-                                      onClick={() => setTags([tag])}
-                                      className={tags.indexOf(tag) >= 0 ? 'active' : ''}
-                                  />
-                              </Tooltip>
-                             )
-                      }
+                          {/*classes.map(tag =>*/}
+                              {/*<Tooltip title={`共有 ${totalTags[tag] ? totalTags[tag] : 0} 条`} key={tag}>*/}
+                                  {/*<Chip*/}
+                                      {/*variant="outlined"*/}
+                                      {/*component='span'*/}
+                                      {/*label={tag}*/}
+                                      {/*onClick={() => setTags([tag])}*/}
+                                      {/*className={tags.indexOf(tag) >= 0 ? 'active' : ''}*/}
+                                  {/*/>*/}
+                              {/*</Tooltip>*/}
+                             {/*)*/}
+                      {/*}*/}
 
-                  </MenuWrapper>
+                  {/*</MenuWrapper>*/}
                   <Divider style={{}}/>
                   {/*<Divider style={{margin: '10px 0'}}/>*/}
                     <ContentWrapper>
