@@ -1,13 +1,13 @@
 package main
 
 import (
-	"database/sql"
 	"github.com/aircjm/orange/web/postgres"
 	"github.com/aircjm/orange/web/postgres/account"
 	"github.com/aircjm/orange/web/postgres/article"
 	"github.com/aircjm/orange/web/postgres/project"
 	"github.com/aircjm/orange/web/postgres/topic"
 	"github.com/aircjm/orange/web/serve"
+	"log"
 )
 
 func dbOp() {
@@ -20,19 +20,13 @@ func dbOp() {
 
 }
 
-func initDatabase(db *sql.DB) {
-	_, err := db.Exec("CREATE DATABASE Website;")
-	if err != nil {
-		panic(err)
-	}
-}
 func serverOp() {
 	serve.App()
 }
 
 func main() {
-
 	dbOp()
+	log.Println("初始化DB成功，开始初始化http服务")
 	serverOp()
 
 }
