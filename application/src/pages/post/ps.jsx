@@ -1,25 +1,18 @@
 import React, {useEffect} from 'react';
 import {Grid} from "@material-ui/core";
-import {ContentWrapper, FilterWrapper, Loading, MenuWrapper, PostsWrapper} from "../../styles/posts";
-
+import {ContentWrapper, FilterWrapper, Loading, PostsWrapper} from "../../styles/posts";
 import Chip from '@material-ui/core/Chip';
 import {Link, withRouter} from 'react-router-dom';
-
 import Divider from '@material-ui/core/Divider';
-
 import {Icon} from "react-fa";
-
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-
 import Tooltip from "@material-ui/core/Tooltip";
-
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
-
 import {Store} from "../../utils/store";
-import {classes} from "../../utils/constants";
+import {desktopStyle} from "../../utils/constants";
 import Button from "@material-ui/core/Button";
 import UpdateIcon from '@material-ui/icons/Update';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
@@ -29,8 +22,6 @@ import TitleIcon from '@material-ui/icons/Title';
 
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
-
-import {desktopStyle} from "../../utils/constants";
 import {useMediaQuery} from "react-responsive";
 import {client} from "../../request";
 import {format} from "../../utils/utils";
