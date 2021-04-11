@@ -10,7 +10,7 @@ import {Grid} from "@material-ui/core";
 
 
 import {Content, Loading, TopicWrapper} from "../../styles/topic";
-import {client} from "../../utils/requests";
+import {client} from "../../request";
 
 
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -31,7 +31,7 @@ const Topics = (props) => {
   const {dispatch} = React.useContext(Store);
 
   const {url} = props.match;
-  
+
 
   const [data, setData] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -57,7 +57,7 @@ const Topics = (props) => {
               payload: {open: true, variant: 'error', content: r.data.res, duration: 2000}
             })
           }
-          
+
         }
       ).catch(e => {
       dispatch({
@@ -68,9 +68,9 @@ const Topics = (props) => {
     }).finally(()=> {
       setLoading(false)
     })
-    
+
   }, [url, dispatch]);
-  
+
   const useStyles = makeStyles({
     card: {
       // maxWidth: 345,
@@ -93,7 +93,7 @@ const Topics = (props) => {
                 const urls = e.ArticleObjects.filter(e => e.Id !== 0);
                 return <Grid component='div' item xs={isDesktop ? 3 : 5}
                              key={e.Url} >
-                
+
                     <Card className={classes.card} >
                       <CardMedia
                         className={classes.media}
@@ -106,17 +106,17 @@ const Topics = (props) => {
                         <span className='date'>最后更新于 {moment(formatTime(e.Modify_time)).fromNow()}</span>
                         {/*<p> {e.Description}</p>*/}
                       </Content>
-                      
+
                     </Card>
-              
-                  
+
+
                 </Grid>
               })
             }
-  
-            
+
+
           </Grid>
-          
+
         </TopicWrapper>
     )
 

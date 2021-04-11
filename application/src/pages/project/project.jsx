@@ -4,7 +4,7 @@ import {withRouter} from 'react-router-dom';
 
 
 import {IFrameWrapper, IFrame, Loading} from "../../styles/project";
-import {client} from "../../utils/requests";
+import {client} from "../../request";
 
 
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -52,7 +52,7 @@ const Project = (props) => {
     }).finally(()=> {
       setLoading(false)
     })
-    
+
   }, [url, matchUrl]);
 
 
@@ -80,9 +80,9 @@ const Project = (props) => {
                     frameborder="no"  marginwidth="0" marginheight="0" scrolling="no"
                     src={data.Frame} />
             }
-  
+
           </IFrameWrapper>
-          
+
         </>
     )
 

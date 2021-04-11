@@ -10,7 +10,7 @@ import {Grid} from "@material-ui/core";
 
 
 import {Content, Loading, ProjectsWrapper} from "../../styles/project";
-import {client} from "../../utils/requests";
+import {client} from "../../request";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import moment from "moment";
@@ -66,9 +66,9 @@ const Projects = (props) => {
     }).finally(()=> {
       setLoading(false)
     })
-    
+
   }, [dispatch]);
-  
+
   const useStyles = makeStyles({
     card: {
       maxWidth: 345,
@@ -102,17 +102,17 @@ const Projects = (props) => {
                         <span className='date'>最后更新于 {moment(formatTime(e.Modify_time)).fromNow()}</span>
                         {/*<p> {e.Description}</p>*/}
                       </Content>
-                      
+
                     </Card>
-              
-                  
+
+
                 </Grid>
               })
             }
-  
-            
+
+
           </Grid>
-          
+
         </ProjectsWrapper>
     )
 

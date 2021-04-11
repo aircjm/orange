@@ -11,6 +11,7 @@ import {Redirect, Route} from "react-router-dom";
 import Post from "./pages/post";
 import Topic from "./pages/topic";
 import Project from "./pages/project";
+import {Auth} from "./pages/auth";
 
 export default function App() {
     const isDesktop = useMediaQuery({query: desktopStyle});
@@ -18,6 +19,7 @@ export default function App() {
         <React.Fragment>
             {/*{isDesktop && <Background/>}*/}
             <Header/>
+            <Auth/>
             <PageWrapper id='PageWrapper'>
                 <Route path='/' exact render={() => <Redirect to="/post"/>}/>
                 <Route path='/post' children={({match}) => match && <Post/>}/>

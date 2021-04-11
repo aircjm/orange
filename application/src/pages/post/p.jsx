@@ -8,7 +8,8 @@ import {TitleWrapper, Article, Comment, Loading, PostWrapper, TabWrapper, TopicI
 import {NavLink, withRouter} from 'react-router-dom';
 
 
-import {client} from "../../utils/requests";
+import {client} from "../../request";
+
 
 
 import CircularProgress from "@material-ui/core/CircularProgress";

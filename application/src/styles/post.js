@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import PancakeEditor from "../components/PancakeEditor"
 
 export const PostWrapper = styled.main`
     padding-top: 20px;
@@ -16,7 +15,7 @@ export const TitleWrapper = styled.div`
   align-items: center;
 `;
 
-export const Article = styled(PancakeEditor)`
+export const Article = styled.div`
 
   border: none;
 

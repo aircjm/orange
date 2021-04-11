@@ -3,7 +3,7 @@ import React, {useEffect, useState} from 'react';
 import {Route, withRouter} from 'react-router-dom';
 
 import P from '../post/p'
-import {client} from "../../utils/requests";
+import {client} from "../../request";
 import {Store} from "../../utils/store";
 
 
