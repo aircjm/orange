@@ -11,7 +11,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Tooltip from "@material-ui/core/Tooltip";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
-import {Store} from "../../utils/store";
+import {Store} from "../../store/store";
 import {desktopStyle} from "../../utils/constants";
 import Button from "@material-ui/core/Button";
 import UpdateIcon from '@material-ui/icons/Update';

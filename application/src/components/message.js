@@ -12,7 +12,7 @@ import Snackbar from '@material-ui/core/Snackbar';
 import SnackbarContent from '@material-ui/core/SnackbarContent';
 import WarningIcon from '@material-ui/icons/Warning';
 import {makeStyles} from '@material-ui/core/styles';
-import {Store} from "../utils/store";
+import {Store} from "../store/store";
 
 
 const variantIcon = {
@@ -98,7 +98,7 @@ const Message = () => {
         ]}
       />
     </Snackbar>
-    
+
   );
 }
 

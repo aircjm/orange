@@ -11,7 +11,7 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 
 
 import Tooltip from "@material-ui/core/Tooltip";
-import {Store} from "../../utils/store";
+import {Store} from "../../store/store";
 import {useMediaQuery} from "react-responsive";
 import {desktopStyle} from "../../utils/constants";
 

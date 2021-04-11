@@ -24,6 +24,12 @@ const reducer = (state, action) => {
 
         case 'title':
             return {...state, title: action.payload};
+        case 'message':
+            return {...state, message: action.payload};
+        case 'breadcrumb':
+            return {...state, breadcrumb: action.payload};
+        case 'responsive':
+            return {...state, responsive: action.payload};
         default:
             return {...state, ...action.payload}
     }

@@ -4,7 +4,7 @@ import {Route, withRouter} from 'react-router-dom';
 
 import P from '../post/p'
 import {client} from "../../request";
-import {Store} from "../../utils/store";
+import {Store} from "../../store/store";
 
 
 const Topic = (props) => {

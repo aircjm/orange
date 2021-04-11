@@ -14,13 +14,14 @@ import Breadcrumbs from '@material-ui/core/Breadcrumbs';
 import CameraIcon from '@material-ui/icons/Camera';
 
 
-import {Store} from "../utils/store";
-import {Button, useMediaQuery} from "@material-ui/core";
+import {Store} from "../store/store";
+import {Button} from "@material-ui/core";
 import SportsSoccerIcon from '@material-ui/icons/SportsSoccer';
 
 import AppsIcon from '@material-ui/icons/Apps';
 import {desktopStyle} from "../utils/constants";
 
+import {useMediaQuery} from "react-responsive";
 
 const Header = (props) => {
   const {location} = props;
@@ -84,8 +85,6 @@ const Header = (props) => {
         }
       </HeaderWrapper>
   )
-
-
 };
 
 

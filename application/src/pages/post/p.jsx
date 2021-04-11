@@ -30,7 +30,7 @@ import * as moment from 'moment';
 import 'moment/locale/zh-cn';
 import CardMedia from "@material-ui/core/CardMedia";
 import Card from "@material-ui/core/Card";
-import {Store} from "../../utils/store";
+import {Store} from "../../store/store";
 import {useMediaQuery} from "react-responsive";
 import {desktopStyle} from "../../utils/constants";
 
@@ -170,7 +170,7 @@ const P = (props) => {
             });
             return
         }
-        
+
         if (!SiteUrl.startsWith('http') && SiteUrl.length !== 0) {
             dispatch({
                 type: 'message',

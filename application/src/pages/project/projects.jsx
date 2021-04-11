@@ -14,7 +14,7 @@ import {client} from "../../request";
 
 import CircularProgress from "@material-ui/core/CircularProgress";
 import moment from "moment";
-import {Store} from "../../utils/store";
+import {Store} from "../../store/store";
 import {formatTime} from "../../utils/utils";
 import {useMediaQuery} from "react-responsive";
 import {desktopStyle} from "../../utils/constants";

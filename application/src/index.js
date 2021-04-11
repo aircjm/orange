@@ -9,7 +9,7 @@ import {GlobalColors, GlobalStyle} from "./styles/GlobalStyles";
 
 import App from './App';
 
-import Store from './utils/store'
+import Store from './store/store'
 
 
 ReactDOM.render(
