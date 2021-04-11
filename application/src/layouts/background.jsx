@@ -1,29 +1,28 @@
 import React from 'react';
 
+// 粒子特效
 const Background = () => {
-  
-
   React.useEffect(() => {
     // return;
     var canvas = document.getElementById('space')
 
     var c = canvas.getContext('2d')
-  
+
     var numStars = 1000
     var radius = '0.' + Math.floor(Math.random() * 9) + 1;
     var focalLength = canvas.width * 2;
-  
+
     var centerX, centerY;
-  
+
     var stars = [];
     var star;
     var i;
-  
+
     var animate = true;
 
 
 
-  
+
     function executeFrame () {
       if (animate) window.requestAnimationFrame(executeFrame);
       moveStars();
@@ -34,7 +33,7 @@ const Background = () => {
 
       centerX = canvas.width / 2;
       centerY = canvas.height / 2;
-    
+
       stars = [];
       for (i = 0; i < numStars; i++) {
         star = {
@@ -46,18 +45,18 @@ const Background = () => {
         stars.push(star)
       }
     }
-  
+
     function moveStars () {
       for (i = 0; i < numStars; i++) {
         star = stars[i];
         star.z--;
-      
+
         if (star.z <= 0) {
           star.z = canvas.width
         }
       }
     }
-  
+
     function drawStars () {
       var pixelX, pixelY, pixelRadius;
 
@@ -74,13 +73,13 @@ const Background = () => {
       c.fillStyle = 'rgba(0,0,0, ' + radius + ')';
       for (i = 0; i < numStars; i++) {
         star = stars[i]
-      
+
         pixelX = (star.x - centerX) * (focalLength / star.z);
         pixelX += centerX
         pixelY = (star.y - centerY) * (focalLength / star.z);
         pixelY += centerY
         pixelRadius = (focalLength / star.z);
-      
+
         c.fillRect(pixelX, pixelY, pixelRadius, pixelRadius);
         c.fillStyle = 'rgba(0,0,0, ' + star.o + ')'
         // c.fill()
@@ -88,9 +87,7 @@ const Background = () => {
     }
     initializeStars();
     executeFrame();
-
     window.addEventListener('resize', resizeCanvas, false);
-
     function resizeCanvas() {
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
@@ -101,11 +98,7 @@ const Background = () => {
        */
       drawStars();
     }
-
   }, );
-
-
-  
 
   const style = {
     "width":"100vw",
@@ -115,11 +108,7 @@ const Background = () => {
     "position":"fixed",
     "zIndex": -2,
   }
-  
   return <canvas id="space" style={style}> </canvas>
-
-  
-  
 }
 
 export default Background;
