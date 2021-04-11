@@ -8,7 +8,6 @@ export const FetchCurrentUser = (setUser) => {
 };
 
 export const UserLogin = (data, setLoading, callback) => {
-
     setLoading(true);
     client.post('login', data)
         .then(response =>  {

@@ -8,8 +8,6 @@ const Login = (props) => {
     const [loading, setLoading] = useState(false);
     const [Name, setName] = useState('');
     const [Token, setToken] = useState('');
-
-
     const { theme, dispatch } = useContext(GlobalStore);
     const history = useHistory();
 
