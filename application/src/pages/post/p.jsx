@@ -2,14 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Grid, Tooltip} from "@material-ui/core";
 
 import HorizontalTab from '../../components/HoriziontalTab'
-import {TitleWrapper, Article, Comment, Loading, PostWrapper, TabWrapper, TopicInPost} from "../../styles/post";
+import {Article, Comment, Loading, PostWrapper, TabWrapper, TitleWrapper, TopicInPost} from "../../styles/post";
 
 
 import {NavLink, withRouter} from 'react-router-dom';
 
 
 import {client} from "../../request";
-
 
 
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -73,10 +72,9 @@ const P = (props) => {
     const [Anchors, setAnchors] = useState([]);
 
 
-
     useEffect(() => {
         const breadcrumb = [];
-        if(Topic) {
+        if (Topic) {
             breadcrumb.push({label: '/topic', value: '专栏'});
             Topic.hasOwnProperty('Url')
                 ? breadcrumb.push({label: '/topic', value: Topic.Name})
@@ -88,382 +86,379 @@ const P = (props) => {
         dispatch({type: 'breadcrumb', payload: breadcrumb})
     }, [dispatch, Title, Topic, location.pathname]);
 
-    useEffect(()=>{
-      setLoading(true);
-      setContent('');
-      client.get(`/Article/${url}`)
-        .then(r => {
+    useEffect(() => {
+        setLoading(true);
+        setContent('');
+        client.get(`/Article/${url}`)
+            .then(r => {
+                    if (r.data.ret) {
+                        const data = r.data.res;
+                        setId(data.Id);
+                        setAuthor(data.Author);
+                        setCreate_time(data.Create_time);
+                        setModify_time(data.Modify_time);
+                        setSite(data.Site);
+                        setRead_num(data.Read_num);
+                        setLike_num(data.Like_num);
+                        setIs_public(data.Is_public);
+                        setTitle(data.Title);
+                        setContent(data.Content);
+                        setComments(data.Comment.map(c => JSON.parse(c)));
+
+                        dispatch({
+                            type: 'message',
+                            payload: {
+                                open: true,
+                                variant: 'success',
+                                content: `获取数据成功, 本文共有 ${data.Content.length} 字符`,
+                                duration: 1000
+                            }
+                        })
+                        updateToc()
+                    } else {
+                        dispatch({
+                            type: 'message',
+                            payload: {open: true, variant: 'error', content: r.data.res, duration: 2000}
+                        })
+                    }
+
+                }
+            ).catch(e => {
+            console.error(e);
+            dispatch({
+                type: 'message',
+                payload: {open: true, variant: 'error', content: '服务器异常！', duration: 2000}
+            })
+        }).finally(() => {
+            setLoading(false)
+        })
+    }, [url, dispatch])
+
+    const updateToc = () => {
+        setTimeout(() => {
+            const article = document.querySelector(".custom-html-style");
+            if (null == article) return;
+            const hs = article.querySelectorAll("h1,h2,h3,h4,h5,h6");
+            const Anchor = [];
+
+            hs.forEach((item, index) => {
+                const h = item.nodeName.substr(0, 2).toLowerCase()
+                item.id = `Anchor-${h}-${index}`;
+                Anchor.push({id: `Anchor-${h}-${index}`, text: item.textContent});
+            })
+            setAnchors(Anchor)
+        }, 1000);
+    }
+
+
+    const addComment = () => {
+        let commit = {
+            From: From,
+            id: Math.random().toString().slice(2, 12),
+            ReplyId: ReplyId,
+            ReplyTo: ReplyTo,
+            ReplyTime: Date().toLocaleString(),
+            Content: ReplyContent,
+            SiteUrl: SiteUrl,
+            children: [],
+        }
+        if (From.length > 10 || From.length < 3) {
+
+            dispatch({
+                type: 'message',
+                payload: {open: true, variant: 'error', content: `昵称格式不正确`, duration: 1000}
+            });
+            return
+        }
+        
+        if (!SiteUrl.startsWith('http') && SiteUrl.length !== 0) {
+            dispatch({
+                type: 'message',
+                payload: {open: true, variant: 'error', content: `个人主页格式不正确`, duration: 1000}
+            });
+            return
+        }
+
+        if (ReplyContent.length > 2000) {
+
+            dispatch({
+                type: 'message',
+                payload: {open: true, variant: 'error', content: `评论正文长度应小于2000字符`, duration: 1000}
+            });
+            return
+        }
+
+        const loop = (comment, key, callback) => {
+            comment.forEach((item, index, arr) => {
+                if (item.id === key) {
+                    return callback(item, index, arr);
+                }
+                if (item.children) {
+                    return loop(item.children, key, callback);
+                }
+            });
+        };
+
+        ReplyTo !== "" ?
+            loop(Comments, ReplyId, (item) => {
+                item.children = item.children || [];
+                item.children.unshift(commit);
+            })
+            : Comments.unshift(commit);
+
+        CommitComment(Comments)
+    }
+    const CommitComment = (comment) => {
+
+        client.post(`/Comment/Update/${url}`, {
+            Comment: comment.map(c => JSON.stringify(c))
+        }).then(r => {
             if (r.data.ret) {
-              const data = r.data.res;
-              setId(data.Id);
-              setAuthor(data.Author);
-              setCreate_time(data.Create_time);
-              setModify_time(data.Modify_time);
-
-              setSite(data.Site);
-              setRead_num(data.Read_num);
-              setLike_num(data.Like_num);
-              // setTags(data.Tags);
-              setIs_public(data.Is_public);
-              // setLogo_url(data.Logo_url);
-              // setSummary(data.Summary);
-              setTitle(data.Title);
-              setContent(data.Content);
-              setComments(data.Comment.map(c => JSON.parse(c)));
-
+                setComments(r.data.res.map(c => JSON.parse(c)))
                 dispatch({
                     type: 'message',
-                    payload: {open: true, variant: 'success', content: `获取数据成功, 本文共有 ${data.Content.length} 字符`, duration: 1000}
-                })
-              updateToc()
+                    payload: {open: true, variant: 'success', content: `评论成功`, duration: 1000}
+                });
             } else {
                 dispatch({
                     type: 'message',
                     payload: {open: true, variant: 'error', content: r.data.res, duration: 2000}
                 })
             }
-
-          }
-        ).catch(e => {
-          console.error(e);
-          dispatch({
-              type: 'message',
-              payload: {open: true, variant: 'error', content: '服务器异常！', duration: 2000}
-          })
-        }).finally(()=> {
-          setLoading(false)
         })
 
-
-
-    }, [url, dispatch])
-
-    const updateToc = () => {
-      setTimeout(() => {
-        const article = document.querySelector(".custom-html-style");
-        if(null == article) return;
-        const hs = article.querySelectorAll("h1,h2,h3,h4,h5,h6");
-        const Anchor = [];
-
-        hs.forEach((item, index) => {
-          const h = item.nodeName.substr(0, 2).toLowerCase()
-          item.id = `Anchor-${h}-${index}`;
-          Anchor.push({id: `Anchor-${h}-${index}`, text: item.textContent});
-        })
-        setAnchors(Anchor)
-      }, 1000);
     }
+    const renderComment = (comments) => {
 
-
-
-  const addComment = () => {
-
-    let commit = {
-      From: From,
-      id: Math.random().toString().slice(2,12),
-      ReplyId: ReplyId,
-      ReplyTo: ReplyTo,
-      ReplyTime: Date().toLocaleString(),
-      Content: ReplyContent,
-      SiteUrl:  SiteUrl,
-      children: [],
-    }
-    if(From.length > 10 || From.length < 3){
-
-        dispatch({
-            type: 'message',
-            payload: {open: true, variant: 'error', content: `昵称格式不正确`, duration: 1000}
-        });
-        return
-    }
-
-    if(!SiteUrl.startsWith('http') && SiteUrl.length !== 0){
-
-        dispatch({
-            type: 'message',
-            payload: {open: true, variant: 'error', content: `个人主页格式不正确`, duration: 1000}
-        });
-        return
-    }
-
-    if(ReplyContent.length > 2000){
-
-        dispatch({
-            type: 'message',
-            payload: {open: true, variant: 'error', content: `评论正文长度应小于2000字符`, duration: 1000}
-        });
-        return
-    }
-
-    const loop = (comment, key, callback) => {
-      comment.forEach((item, index, arr) => {
-        if (item.id === key) {
-          return callback(item, index, arr);
-        }
-        if (item.children) {
-          return loop(item.children, key, callback);
-        }
-      });
-    };
-
-    ReplyTo !== "" ?
-      loop(Comments, ReplyId, (item) => {
-        item.children = item.children || [];
-        item.children.unshift(commit);
-      })
-      : Comments.unshift(commit);
-
-    CommitComment(Comments)
-  }
-  const CommitComment = (comment) => {
-
-    client.post(`/Comment/Update/${url}`, {
-      Comment: comment.map(c => JSON.stringify(c))
-    }).then(r => {
-      if (r.data.ret) {
-        setComments(r.data.res.map(c => JSON.parse(c)))
-          dispatch({
-              type: 'message',
-              payload: {open: true, variant: 'success', content: `评论成功`, duration: 1000}
-          });
-      } else {
-          dispatch({
-              type: 'message',
-              payload: {open: true, variant: 'error', content: r.data.res, duration: 2000}
-          })
-      }
-    })
-
-  }
-  const renderComment = (comments) => {
-
-    return comments.map((comment, index) => {
-      return <div className='item' key={index}>
-          <Avatar component='div' className='avatar' src={avatars[parseInt(comment.id)%avatars.length]}/>
-        <div className='content'>
-          <div className='title'>
-              <span className='name'>{comment.From}</span>
-            <span className='date'>
+        return comments.map((comment, index) => {
+            return <div className='item' key={index}>
+                <Avatar component='div' className='avatar' src={avatars[parseInt(comment.id) % avatars.length]}/>
+                <div className='content'>
+                    <div className='title'>
+                        <span className='name'>{comment.From}</span>
+                        <span className='date'>
                 <Tooltip title={moment(comment.ReplyTime).format("llll")}>
                     <span>{moment(comment.ReplyTime).fromNow()}</span>
                 </Tooltip>
             </span>
-          </div>
-          <div className='text' style={{color: comment.id === ReplyId ? "red": 'black'}}>
-            {comment.Content}
-              <span className='reply' onClick={() => {
-                  setReplyTo(comment.From); setReplyId(comment.id);
-                  document.querySelector('#new-comment').scrollIntoView({ behavior: 'smooth' });
-              }}>回复</span>
-          </div>
+                    </div>
+                    <div className='text' style={{color: comment.id === ReplyId ? "red" : 'black'}}>
+                        {comment.Content}
+                        <span className='reply' onClick={() => {
+                            setReplyTo(comment.From);
+                            setReplyId(comment.id);
+                            document.querySelector('#new-comment').scrollIntoView({behavior: 'smooth'});
+                        }}>回复</span>
+                    </div>
 
-          {
-            comment.children &&
-            renderComment(comment.children)
-          }
-        </div>
-      </div>
-    })
-  };
-
-
-
-  return (
-          <PostWrapper>
-            <Grid container justify={'space-around'} component='div' >
-              {
-                isDesktop &&
-                <Grid component='div' item xs={3}>
-                  {
-                    Topic && Topic.hasOwnProperty('Id') &&
-                    <TopicInPost>
-                      <Card>
-                        <CardMedia
-                          style={{height: 150}}
-                          image={Topic.Logo_url}
-                          title={Topic.Description}
-                        />
-                        <div className='card'>
-                          <h2>{Topic.Name}</h2>
-                          <p> {Topic.Description}</p>
-                          <div className='group'>
-                            {
-                              Topic.ArticleObjects.map((e, index) => {
-                                const obj = JSON.parse(Topic.Articles[index]);
-
-                                if (obj.type === 'menu') {
-                                  return <span className={`menu`} key={index}>{obj.title}</span>
-                                } else {
-                                  const paths = location.pathname.split('/');
-                                  paths[paths.length - 1] = e.Url;
-                                  return <NavLink to={paths.join('/')} className={`document`} key={index}>
-                                    <Tooltip title={e.Title}>
-                                      <span>{e.Title}</span>
-                                    </Tooltip>
-                                  </NavLink>
-
-                                }
-                              })
-                            }
-                          </div>
-                        </div>
-                      </Card>
-                    </TopicInPost>
-                  }
-                </Grid>
-              }
-              <Grid component='div' item xs={isDesktop ? 6 : 12}>
-                {
-                  loading && <Loading><CircularProgress  color="secondary" /></Loading>
-                }
-                <TitleWrapper>
-                    <h1>{Title}</h1>
-
-                </TitleWrapper>
-
-                <Article value={Content}/>
-
-                {
-                  !loading &&
-                  <Comment id={"Comments"}>
                     {
-                      Comments.length > 0 &&
-                      <>
-                        <h3>评论栏</h3>
-                        {/*<Divider component='div'/>*/}
-                        {renderComment(Comments)}
-                      </>
+                        comment.children &&
+                        renderComment(comment.children)
+                    }
+                </div>
+            </div>
+        })
+    };
+
+
+    return (
+        <PostWrapper>
+            <Grid container justify={'space-around'} component='div'>
+                {
+                    isDesktop &&
+                    <Grid component='div' item xs={3}>
+                        {
+                            Topic && Topic.hasOwnProperty('Id') &&
+                            <TopicInPost>
+                                <Card>
+                                    <CardMedia
+                                        style={{height: 150}}
+                                        image={Topic.Logo_url}
+                                        title={Topic.Description}
+                                    />
+                                    <div className='card'>
+                                        <h2>{Topic.Name}</h2>
+                                        <p> {Topic.Description}</p>
+                                        <div className='group'>
+                                            {
+                                                Topic.ArticleObjects.map((e, index) => {
+                                                    const obj = JSON.parse(Topic.Articles[index]);
+
+                                                    if (obj.type === 'menu') {
+                                                        return <span className={`menu`} key={index}>{obj.title}</span>
+                                                    } else {
+                                                        const paths = location.pathname.split('/');
+                                                        paths[paths.length - 1] = e.Url;
+                                                        return <NavLink to={paths.join('/')} className={`document`}
+                                                                        key={index}>
+                                                            <Tooltip title={e.Title}>
+                                                                <span>{e.Title}</span>
+                                                            </Tooltip>
+                                                        </NavLink>
+
+                                                    }
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                </Card>
+                            </TopicInPost>
+                        }
+                    </Grid>
+                }
+                <Grid component='div' item xs={isDesktop ? 6 : 12}>
+                    {
+                        loading && <Loading><CircularProgress color="secondary"/></Loading>
+                    }
+                    <TitleWrapper>
+                        <h1>{Title}</h1>
+
+                    </TitleWrapper>
+
+                    <Article value={Content}/>
+
+                    {
+                        !loading &&
+                        <Comment id={"Comments"}>
+                            {
+                                Comments.length > 0 &&
+                                <>
+                                    <h3>评论栏</h3>
+                                    {/*<Divider component='div'/>*/}
+                                    {renderComment(Comments)}
+                                </>
+                            }
+
+                            <h3 id='new-comment'>添加评论</h3>
+                            <Divider component='div'/>
+                            <Grid container justify={'space-around'} component='div'>
+                                <Grid component='div' item xs={5}>
+                                    <TextField
+                                        required
+                                        error={From.length > 50 || (From.length < 1 && From.length !== 0)}
+                                        label="昵称"
+                                        id="margin-dense"
+                                        style={{width: '100%', margin: '10px auto'}}
+                                        helperText={
+                                            From.length > 50 || (From.length < 1 && From.length !== 0)
+                                                ? "1 <= 长度 <= 50"
+                                                : "输入昵称"
+                                        }
+                                        value={From}
+                                        onChange={(e) => setFrom(e.target.value)}
+                                    />
+                                </Grid>
+                                <Grid component='div' item xs={2}/>
+                                <Grid component='div' item xs={5}>
+                                    <TextField
+                                        // required
+                                        error={!SiteUrl.startsWith('http') && SiteUrl.length > 0}
+                                        label="个人主页"
+                                        value={SiteUrl}
+                                        onChange={(e) => setSiteUrl(e.target.value)}
+                                        style={{width: '100%', margin: '10px auto'}}
+
+                                        helperText={
+                                            !SiteUrl.startsWith('http') && SiteUrl.length > 0
+                                                ? "请以http开头"
+                                                : "输入个人主页地址, 请以http开头"
+                                        }
+                                    />
+
+                                </Grid>
+
+                                <Grid component='div' item xs={12}>
+
+                                    <TextField
+                                        required
+                                        error={ReplyContent.length > 1000}
+                                        label={ReplyTo === '' ? "正文" : `回复 ${ReplyTo}`}
+                                        multiline
+                                        rowsMax="6"
+                                        value={ReplyContent}
+                                        onChange={(e) => setReplyContent(e.target.value)}
+
+                                        style={{width: '100%', marginBottom: 20}}
+                                        helperText={
+                                            ReplyContent.length > 10000
+                                                ? "长度 <= 10000"
+                                                : "输入正文内容"
+                                        }
+                                    />
+
+                                </Grid>
+
+                            </Grid>
+                            <Button variant="contained" color="primary"
+                                    style={{margin: '10px 0 20px 0'}}
+                                    onClick={addComment}
+                            >
+                                提交
+                                <CloudUploadIcon style={{marginLeft: 15}}/>
+                            </Button>
+                        </Comment>
                     }
 
-                    <h3 id='new-comment'>添加评论</h3>
-                    <Divider component='div'/>
-                    <Grid container justify={'space-around'} component='div' >
-                      <Grid component='div' item xs={5} >
-                        <TextField
-                          required
-                          error={From.length > 50 || (From.length < 1 && From.length !== 0)}
-                          label="昵称"
-                          id="margin-dense"
-                          style={{width: '100%',  margin: '10px auto'}}
-                          helperText={
-                            From.length > 50 || (From.length < 1 && From.length !== 0)
-                              ? "1 <= 长度 <= 50"
-                              : "输入昵称"
-                          }
-                          value={From}
-                          onChange={(e) => setFrom(e.target.value)}
-                        />
-                      </Grid>
-                      <Grid component='div' item xs={2} />
-                      <Grid component='div' item xs={5} >
-                        <TextField
-                          // required
-                          error={!SiteUrl.startsWith('http') && SiteUrl.length > 0}
-                          label="个人主页"
-                          value={SiteUrl}
-                          onChange={(e) => setSiteUrl(e.target.value)}
-                          style={{width: '100%', margin: '10px auto'}}
+                </Grid>
+                {
+                    isDesktop &&
+                    <Grid component='div' item xs={3}>
+                        {
+                            !loading &&
+                            <TabWrapper>
+                                <HorizontalTab
+                                    bootstrap
+                                    centered
+                                    active={1}
+                                    labels={['文章大纲', '文章属性']}
+                                    tabs={[
+                                        <Anchor onClick={(e, f) => e.preventDefault()} offsetTop={60}
+                                                style={{marginLeft: 0}}>
+                                            {
+                                                Anchors.map((e, index) => {
+                                                    return <Anchor.Link
+                                                        key={index} href={`#${e.id}`}
+                                                        title={
+                                                            <span style={{
+                                                                marginLeft: 14 * (parseInt(e.id[8]) - 1),
+                                                                fontWeight: e.id[8] === "1" ? "bold" : "normal"
+                                                            }}>{e.text}</span>
+                                                        }
+                                                    />
+                                                })
+                                            }
+                                            <Anchor.Link
+                                                href={`#Comments`} style={{marginLeft: 20}}
+                                                title={<span style={{marginLeft: 0, fontWeight: "bold"}}>评论栏</span>}
+                                            />
+                                        </Anchor>,
+                                        <ul className='property'>
+                                            <li><span>标题：</span>{Title}</li>
+                                            <li><span>作者：</span>{Author}</li>
+                                            <li><span>文章ID：</span>{Id}</li>
+                                            <li><span>创建时间：</span>{Create_time}</li>
+                                            <li><span>最后更新：</span>{Modify_time}</li>
+                                            <li><span>发表地址：</span>{Site}</li>
 
-                          helperText={
-                            !SiteUrl.startsWith('http')  && SiteUrl.length > 0
-                              ? "请以http开头"
-                              : "输入个人主页地址, 请以http开头"
-                          }
-                        />
+                                            <li><span>阅读量：</span>{Read_num}</li>
+                                            <li><span>点赞数：</span>{Like_num}</li>
+                                            <li><span>是否公开：</span>{Is_public}</li>
+                                            <li><span>点赞数：</span>{Like_num}</li>
 
-                      </Grid>
+                                        </ul>
+                                    ]}
+                                    style={{position: 'fixed'}}
+                                />
 
-                      <Grid component='div' item xs={12} >
-
-                        <TextField
-                          required
-                          error={ReplyContent.length > 1000}
-                          label={ReplyTo === '' ? "正文" : `回复 ${ReplyTo}`}
-                          multiline
-                          rowsMax="6"
-                          value={ReplyContent}
-                          onChange={(e) => setReplyContent(e.target.value)}
-
-                          style={{width: '100%', marginBottom: 20}}
-                          helperText={
-                            ReplyContent.length > 10000
-                              ? "长度 <= 10000"
-                              : "输入正文内容"
-                          }
-                        />
-
-                      </Grid>
+                            </TabWrapper>
+                        }
 
                     </Grid>
-                    <Button variant="contained" color="primary"
-                            style={{margin: '10px 0 20px 0'}}
-                            onClick={addComment}
-                    >
-                      提交
-                      <CloudUploadIcon style={{marginLeft: 15}} />
-                    </Button>
-                  </Comment>
                 }
-
-              </Grid>
-              {
-                isDesktop &&
-                <Grid component='div' item xs={3}>
-                  {
-                    !loading &&
-                    <TabWrapper>
-                      <HorizontalTab
-                        bootstrap
-                        centered
-                        active={1}
-                        labels={['文章大纲', '文章属性']}
-                        tabs={[
-                          <Anchor onClick={(e, f) => e.preventDefault()} offsetTop={60} style={{marginLeft: 0}}>
-                            {
-                              Anchors.map((e, index) => {
-                                return <Anchor.Link
-                                  key={index} href={`#${e.id}`}
-                                  title={
-                                    <span style={{
-                                      marginLeft: 14 * (parseInt(e.id[8]) - 1),
-                                      fontWeight: e.id[8] === "1" ? "bold" : "normal"
-                                    }}>{e.text}</span>
-                                  }
-                                />
-                              })
-                            }
-                            <Anchor.Link
-                              href={`#Comments`} style={{marginLeft: 20}}
-                              title={<span style={{marginLeft: 0, fontWeight: "bold"}}>评论栏</span>}
-                            />
-                          </Anchor>,
-                          <ul className='property'>
-                            <li><span>标题：</span>{Title}</li>
-                            <li><span>作者：</span>{Author}</li>
-                            <li><span>文章ID：</span>{Id}</li>
-                            <li><span>创建时间：</span>{Create_time}</li>
-                            <li><span>最后更新：</span>{Modify_time}</li>
-                            <li><span>发表地址：</span>{Site}</li>
-
-                            <li><span>阅读量：</span>{Read_num}</li>
-                            <li><span>点赞数：</span>{Like_num}</li>
-                            <li><span>是否公开：</span>{Is_public}</li>
-                            <li><span>点赞数：</span>{Like_num}</li>
-
-                          </ul>
-                        ]}
-                        style={{position: 'fixed'}}
-                      />
-
-                    </TabWrapper>
-                  }
-
-                </Grid>
-              }
             </Grid>
 
-          </PostWrapper>
-      )
+        </PostWrapper>
+    )
 
 }
 

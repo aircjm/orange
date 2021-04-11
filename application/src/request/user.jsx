@@ -1,6 +1,7 @@
 import {client} from "./index";
 import {message} from "antd";
 import {defaultValue} from "../store/global";
+import {login, loginOut} from "./api";
 
 export const FetchCurrentUser = (setUser) => {
     client.get("fetchCurrentUser")
@@ -9,7 +10,7 @@ export const FetchCurrentUser = (setUser) => {
 
 export const UserLogin = (data, setLoading, callback) => {
     setLoading(true);
-    client.post('login', data)
+    client.post(login, data)
         .then(response =>  {
             callback(response)
             message.success(`欢迎回来~ ${data.Name}`)
@@ -22,7 +23,7 @@ export const UserLogin = (data, setLoading, callback) => {
 
 
 export const UserLogout = (callback) => {
-    client.post("logout")
+    client.post(loginOut)
         .then( response => {
             callback(defaultValue)
         })
